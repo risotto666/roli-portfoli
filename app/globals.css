@@ -1,26 +1,226 @@
-@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 17, 24, 39;
+  --background-end-rgb: 17, 24, 39;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  color: rgb(var(--foreground-rgb));
+  background: linear-gradient(
+      to bottom,
+      transparent,
+      rgb(var(--background-end-rgb))
+    )
+    rgb(var(--background-start-rgb));
+  scroll-behavior: smooth;
+}
+
+section {
+  position: relative;
+}
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+}
+
+/* Add these animation classes */
+.fade-in {
+  animation: fadeIn 0.8s ease-in-out forwards;
+}
+
+.slide-in-left {
+  animation: slideInLeft 0.8s ease-in-out forwards;
+}
+
+.slide-in-right {
+  animation: slideInRight 0.8s ease-in-out forwards;
+}
+
+.scale-in {
+  animation: scaleIn 0.8s ease-in-out forwards;
+}
+
+/* Background animation */
+.bg-animate-in {
+  animation: bgScaleIn 2.5s ease-out forwards;
+}
+
+/* Service card animation */
+.service-card-animate {
+  animation: serviceCardIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Reason card animation */
+.reason-card-animate {
+  animation: reasonCardIn 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+/* Button hover effect */
+.cta-button .button-bg {
+  transform-origin: center;
+  transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.cta-button:hover .button-bg {
+  transform: scale(1);
+}
+
+/* Stats container hover effect */
+.stats-container:hover {
+  box-shadow: 0 0 20px rgba(34, 197, 94, 0.1);
+}
+
+/* Feature item hover effect */
+.feature-item:hover .check-icon {
+  transform: scale(1.2);
+  background-color: rgba(34, 197, 94, 0.3);
+}
+
+/* Hero image hover effects */
+.hero-image-container {
+  transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.hero-image-container:hover {
+  transform: scale(1.05) rotate(5deg);
+}
+
+.hero-image-container:hover .hero-glow {
+  background-color: rgba(34, 197, 94, 0.3);
+  filter: blur(16px);
+  transform: scale(1.1);
+}
+
+.hero-image-container:hover .hero-border {
+  opacity: 1;
+}
+
+.hero-image-container:hover .hero-border > div {
+  animation: spin-slow 10s linear infinite;
+}
+
+/* Pulse animation for hero image */
+.hero-image-container:hover::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  border: 2px solid rgba(34, 197, 94, 0.5);
+  animation: pulse 1.5s ease-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.5);
+    opacity: 0;
+  }
+}
+
+/* Slow spin animation for the hero image border */
+@keyframes spin-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 10s linear infinite;
+}
+
+@keyframes reasonCardIn {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes serviceCardIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.9) translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes bgScaleIn {
+  0% {
+    transform: scale(1.1);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 0.2;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+.bg-animate-in {
+  animation: bgScaleIn 2.5s ease-out forwards;
+}
+section {
+  position: relative;
+  /* Add scroll margin to account for fixed header */
+  scroll-margin-top: 80px;
 }
