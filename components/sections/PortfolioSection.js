@@ -13,31 +13,37 @@ export default function PortfolioSection() {
       title: "Barber website",
       category: "Next.js / Supabase",
       image: "/projects/fodraszat.png",
+      link: "https://fodraszat-eight.vercel.app",
     },
     {
       title: "Portfolio Template",
       category: "React / Tailwind",
       image: "/projects/vivi.png",
+      link: "https://vivike2.vercel.app",
     },
     {
       title: "Restaurant website",
       category: "Next.js / Tailwind",
       image: "/projects/etterem.png",
+      link: "https://etterem.vercel.app",
     },
     {
       title: "Wordle game",
       category: "React / Tailwind",
       image: "/projects/wordle.png",
+      link: "https://worlde-magyar.vercel.app",
     },
     {
       title: "Quiz game",
       category: "React",
       image: "/projects/quiz.png",
+      link: "https://quiz-virid-six.vercel.app",
     },
     {
       title: "Portfolio Template",
       category: "Next.js / Tailwind",
       image: "/projects/roli.png",
+      link: "https://portfolio2-eosin-iota.vercel.app",
     },
   ];
 
@@ -79,7 +85,6 @@ export default function PortfolioSection() {
             Tailwind CSS.
           </p>
         </div>
-
         <div
           ref={portfolioRef}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
@@ -92,42 +97,29 @@ export default function PortfolioSection() {
                   ? "portfolio-card-animate"
                   : "opacity-0 scale-90 translate-y-5"
               }`}
-              style={{
-                transitionDelay: `${index * 100}ms`,
-              }}
+              style={{ transitionDelay: `${index * 100}ms` }}
             >
-              <Image
-                src={project.image || "/placeholder.svg"}
-                alt={project.title}
-                width={600}
-                height={400}
-                className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6">
+              <Link
+                href={project.link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="block"
+              >
+                <Image
+                  src={project.image || "/placeholder.svg"}
+                  alt={project.title}
+                  width={600}
+                  height={400}
+                  className="w-full h-64 object-cover transition-transform duration-500 group-hover:scale-110"
+                />
+              </Link>
+
+              {/* Próbáld kikommentelni az overlay-t, ha gond van vele */}
+              <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-gray-900/70 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex flex-col justify-end p-6 pointer-events-none">
                 <h3 className="text-xl font-bold text-white mb-1">
                   {project.title}
                 </h3>
                 <p className="text-green-400 mb-4">{project.category}</p>
-                <Link
-                  href="#"
-                  className="inline-flex items-center text-sm font-medium text-white hover:text-green-400 transition-colors group/link"
-                >
-                  <span>View Project</span>
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    className="h-4 w-4 ml-2 transform transition-transform duration-300 group-hover/link:translate-x-1"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth={2}
-                      d="M14 5l7 7m0 0l-7 7m7-7H3"
-                    />
-                  </svg>
-                </Link>
               </div>
             </div>
           ))}

@@ -1,11 +1,10 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ChevronDown } from "lucide-react";
 import Image from "next/image";
 import { motion } from "framer-motion";
 
-// Animation variants
 const containerVariants = {
   hidden: { opacity: 0 },
   visible: {
@@ -25,17 +24,49 @@ const itemVariants = {
     scale: 1,
     transition: {
       duration: 2,
-      ease: [0.25, 0.1, 0.25, 1], // Custom easing function for a smooth feel
+      ease: [0.25, 0.1, 0.25, 1],
     },
   },
 };
 
 export default function HeroSection({ scrollToSection }) {
   const [bgLoaded, setBgLoaded] = useState(false);
+  const videoRef = useRef(null);
 
   useEffect(() => {
-    // Trigger the background animation after component mounts
     setBgLoaded(true);
+
+    const video = videoRef.current;
+    if (video) {
+      video.play().catch((e) => {
+        console.log("Videó lejátszás blokkolva az első betöltéskor:", e);
+      });
+    }
+  }, []);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        const video = videoRef.current;
+        if (!video) return;
+        if (entry.isIntersecting) {
+          video.play().catch((e) => {
+            console.log("Videó lejátszás blokkolva:", e);
+          });
+        } else {
+          video.pause();
+        }
+      },
+      { threshold: 0.5 }
+    );
+
+    if (videoRef.current) {
+      observer.observe(videoRef.current);
+    }
+
+    return () => {
+      if (videoRef.current) observer.unobserve(videoRef.current);
+    };
   }, []);
 
   return (
@@ -43,40 +74,34 @@ export default function HeroSection({ scrollToSection }) {
       id="hero"
       className="min-h-screen flex items-center justify-center pt-20 relative overflow-hidden"
     >
-      {/* Animated Background Image */}
+      {/* Háttér videó */}
       <div
-        className={`absolute inset-0 bg-cover bg-center bg-no-repeat z-0 transition-all duration-[2500ms] ease-out ${
-          bgLoaded ? "scale-100 opacity-20" : "scale-110 opacity-0"
+        className={`absolute bg-[url('/hero.gif')] bg-cover inset-0 z-0 transition-all duration-[2500ms] ease-out ${
+          bgLoaded ? "opacity-20 scale-100" : "opacity-0 scale-110"
         }`}
-        style={{
-          backgroundImage: "url('/bg2.jpg')",
-          transformOrigin: "center",
-        }}
       ></div>
 
-      {/* Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-to-b from-gray-600/30 via-gray-900/20 to-gray-600/30 z-0"></div>
-
+      {/* Animált szöveges rész */}
       <motion.div
         className="container mx-auto px-4 relative z-10"
         variants={containerVariants}
         initial="hidden"
         animate="visible"
       >
-        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
+        <div className="flex mt-12 flex-col md:flex-row items-center justify-between gap-12">
           <motion.div className="md:w-1/2" variants={itemVariants}>
             <h1 className="text-4xl md:text-6xl font-bold mb-4">
-              Hi, I'm{" "}
-              <span className="text-green-500 inline-block">Roland</span>
+              Hi, <span className="text-green-500 inline-block">I'm</span>{" "}
+              Roland
             </h1>
             <h2 className="text-2xl md:text-3xl text-gray-300 mb-6">
-              Web Developer & Designer
+              Web Developer and Designer
             </h2>
             <p className="text-gray-400 text-lg mb-8">
               I create modern, responsive websites using React, Next.js, and
-              Tailwind CSS. Let's build something amazing together.
+              Tailwind CSS. Let's build something great together!
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex  flex-wrap gap-4">
               <a
                 href="#portfolio"
                 className="bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors font-medium inline-block"
@@ -87,19 +112,18 @@ export default function HeroSection({ scrollToSection }) {
                 href="#contact"
                 className="border border-green-600 text-green-500 hover:bg-green-600/10 px-6 py-3 rounded-lg transition-colors font-medium inline-block"
               >
-                Contact Me
+                Get in Touch
               </a>
             </div>
           </motion.div>
+
           <motion.div
             className="md:w-1/2 flex justify-center"
             variants={itemVariants}
           >
             <div className="hero-image-container relative">
-              {/* Glow effect container */}
               <div className="absolute inset-0 rounded-full blur-md bg-green-500/0 scale-100 transition-all duration-500 hero-glow"></div>
 
-              {/* Rotating border effect */}
               <div className="absolute inset-0 rounded-full overflow-hidden opacity-0 transition-all duration-500 hero-border">
                 <div
                   className="w-full h-full border-4 border-green-400/50 rounded-full"
@@ -107,8 +131,7 @@ export default function HeroSection({ scrollToSection }) {
                 ></div>
               </div>
 
-              {/* Main image container */}
-              <div className="relative w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-green-500/30 transition-all duration-300 hover:border-green-400/80 z-10">
+              <div className="relative mb-4 w-64 h-64 md:w-80 md:h-80 rounded-full overflow-hidden border-4 border-green-500/30 transition-all duration-300 hover:border-green-400/80 z-10">
                 <Image
                   src="/me.JPG"
                   alt="Roland"
@@ -116,11 +139,10 @@ export default function HeroSection({ scrollToSection }) {
                   className="object-cover"
                 />
               </div>
-
-              {/* Pulse effect (added via CSS) */}
             </div>
           </motion.div>
         </div>
+
         <motion.a
           href="#about"
           className="absolute bottom-10 left-1/2 transform -translate-x-1/2 cursor-pointer"

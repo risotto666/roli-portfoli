@@ -11,13 +11,21 @@ const fadeIn = {
 };
 
 const slideInLeft = {
-  hidden: { opacity: 0, x: -30 },
-  visible: { opacity: 1, x: 0 },
+  hidden: { opacity: 0, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
 };
 
 const slideInRight = {
-  hidden: { opacity: 0, x: 30 },
-  visible: { opacity: 1, x: 0 },
+  hidden: { opacity: 0, scale: 0 },
+  visible: {
+    opacity: 1,
+    scale: 1,
+    transition: { duration: 0.6, ease: "easeOut" },
+  },
 };
 
 export default function AboutSection() {
@@ -42,7 +50,7 @@ export default function AboutSection() {
           <motion.div
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, margin: "-100px" }}
+            viewport={{ once: true, amount: 0.2 }}
             variants={slideInLeft}
             transition={{ duration: 0.8, delay: 0.2 }}
             className="md:w-1/2"
@@ -61,7 +69,7 @@ export default function AboutSection() {
               {/* Main image with hover effects */}
               <div className="relative rounded-lg shadow-xl overflow-hidden transform transition-all duration-500 group-hover:scale-[1.03] group-hover:rotate-2 z-10">
                 <Image
-                  src="/developer.jpg"
+                  src="/about.png"
                   alt="About Roland"
                   width={500}
                   height={600}
